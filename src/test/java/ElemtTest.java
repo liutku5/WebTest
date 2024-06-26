@@ -19,18 +19,30 @@ public class ElemtTest {
     public void websiteRegistration() {
         driver.get("https://elenta.lt/registracija");
         WebElement usernameField = driver.findElement(By.name("UserName"));
-        String uesername = "Petras";
+        String uesername = "Petras1478";
         usernameField.sendKeys(uesername);
+
         WebElement emailField = driver.findElement(By.name("Email"));
-        String email = "Petras@gmail.com";
+        String email = "Petras2@gmail.com";
         emailField.sendKeys(email);
+
         WebElement passwordField = driver.findElement(By.name("Password"));
         String password = "Petras123";
         passwordField.sendKeys(password);
+
         WebElement passwordFieldRepeat = driver.findElement(By.name("Password2"));
         String passwordRepeat = "Petras123";
         passwordFieldRepeat.sendKeys(passwordRepeat);
+
         driver.findElement(By.xpath("//*[@id=\"main-container\"]/form/fieldset/table/tbody/tr[11]/td[2]/input")).click();
+
+        WebElement info;
+        try {
+            info = driver.findElement(By.className("info"));
+            Assert.assertTrue(info.isDisplayed(), "The info element should be displayed");
+        } catch (Exception e) {
+            Assert.fail("The info element was not found or displayed");
+        }
     }
 
     public void acceptCookies() {
