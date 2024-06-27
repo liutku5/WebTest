@@ -616,25 +616,8 @@ public class ElemtTest {
     }
 
     @Test
-    public void websitePlacingAd(){
-        driver.get("https://elenta.lt/registracija");
-        WebElement usernameField = driver.findElement(By.name("UserName"));
-        String uesername = "Petras14787";
-        usernameField.sendKeys(uesername);
-
-        WebElement emailField = driver.findElement(By.name("Email"));
-        String email = "Petras19@gmail.com";
-        emailField.sendKeys(email);
-
-        WebElement passwordField = driver.findElement(By.name("Password"));
-        String password = "Petras123";
-        passwordField.sendKeys(password);
-
-        WebElement passwordFieldRepeat = driver.findElement(By.name("Password2"));
-        String passwordRepeat = "Petras123";
-        passwordFieldRepeat.sendKeys(passwordRepeat);
-
-        driver.findElement(By.xpath("//*[@id=\"main-container\"]/form/fieldset/table/tbody/tr[11]/td[2]/input")).click();
+    public void websitePlacingAd() throws InterruptedException {
+        driver.get("https://elenta.lt");
         driver.findElement(By.xpath("//*[@id=\"submit-new-ad-nav-button\"]")).click();
         driver.findElement(By.xpath("//*[@id=\"select-top-category-list\"]/li[1]/a")).click();
         driver.findElement(By.xpath("//*[@id=\"select-sub-category-list\"]/li[1]/a")).click();
@@ -669,10 +652,9 @@ public class ElemtTest {
         WebElement imageInput = driver.findElement(By.xpath("//*[@id=\"inputfile\"]"));
         String filePath = "C:/Users/l1utk/OneDrive/Desktop/paskaitos/maserati.jpg";
         imageInput.sendKeys(filePath);
+        Thread.sleep(1000);
 
         driver.findElement(By.xpath("//*[@id=\"forward-button\"]")).click();
-        driver.findElement(By.xpath("//*[@id=\"forward-button\"]")).click();
-
     }
 
 
