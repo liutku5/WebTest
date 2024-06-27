@@ -2,6 +2,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -11,9 +13,13 @@ import org.testng.annotations.Test;
 //vardas 3-20 simbolių, raidės skaičiai ir tarpai galimi
 //passwordas 8 simboliai maža, didelė raidė, skaicius, 8 simboliai. viskas kartu privaloma
 import java.time.Duration;
+import java.util.List;
 
 public class ElemtTest {
     public static WebDriver driver;
+
+    public static WebDriverWait wait;
+
 
     @Test
     public void websiteRegistration() {
@@ -657,8 +663,58 @@ public class ElemtTest {
         driver.findElement(By.xpath("//*[@id=\"forward-button\"]")).click();
     }
 
+    @Test
+    public void websitevinoteka() throws InterruptedException {
+        driver.get("https://vynoteka.lt/");
+        driver.findElement(By.id("CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll")).click();
+        driver.findElement(By.xpath("//*[@id=\"app__inner\"]/div[2]/div/div/div/div/div[2]/div[3]/div/div[1]/button")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[3]/div[3]/div/div[2]/div[2]/div[2]"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div[4]/div/div/div/button"))).click();
+
+        WebElement inputField = driver.findElement(By.xpath("//*[@id=\"app__header\"]/div[2]/div/div/div[3]/div/div/div/form/div[1]/div/input"));
+        String inputText = "Vynas";
+        inputField.sendKeys(inputText);
+        Thread.sleep(10000);
+        driver.findElement(By.xpath("//*[@id=\"app__header\"]/div[2]/div/div/div[3]/div/div/div/form/div[1]/button")).click();
+
+    }
+
+    @Test
+    public void websiteSkelbiu() throws InterruptedException {
+        driver.get("https://skelbiu.lt/");
+        driver.findElement(By.xpath("//*[@id=\"onetrust-accept-btn-handler\"]")).click();
+
+        WebElement searchField = driver.findElement(By.id("searchKeyword"));
+        String inputText = "stetoskopas";
+        searchField.sendKeys(inputText);
+        driver.findElement(By.id("searchButton")).click();
+        Thread.sleep(5000);
+
+        int totalCards = 0;
+
+        // Loop through pagination if "next" button exists
+        while (true) {
+            // Find all card elements on the current page
+            List<WebElement> cardElements = driver.findElements(By.className("js-remember-button bookmark-button "));
+            totalCards += cardElements.size();
 
 
+            // Try to find the "next" button
+            List<WebElement> nextPageElements = driver.findElements(By.cssSelector("a.pagination_link[rel='next']"));
+
+            // If there is a next page, navigate to it
+            if (nextPageElements.size() > 0) {
+                nextPageElements.get(0).click();
+                Thread.sleep(5000); // Wait for the next page to load
+            } else {
+                // Exit the loop if there are no more pages
+                break;
+            }
+        }
+
+        // Print the results
+        System.out.println("Total number of cards found: " + totalCards);
+    }
 
     public void acceptCookies() {
         driver.get("https://elenta.lt");
@@ -670,7 +726,8 @@ public class ElemtTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        acceptCookies();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(25));
+//        acceptCookies();
     }
 
 
