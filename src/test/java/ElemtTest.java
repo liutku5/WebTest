@@ -19,11 +19,11 @@ public class ElemtTest {
     public void websiteRegistration() {
         driver.get("https://elenta.lt/registracija");
         WebElement usernameField = driver.findElement(By.name("UserName"));
-        String uesername = "Petras1478";
+        String uesername = "Petras14782";
         usernameField.sendKeys(uesername);
 
         WebElement emailField = driver.findElement(By.name("Email"));
-        String email = "Petras2@gmail.com";
+        String email = "Petras10@gmail.com";
         emailField.sendKeys(email);
 
         WebElement passwordField = driver.findElement(By.name("Password"));
@@ -613,6 +613,66 @@ public class ElemtTest {
         } catch (Exception e) {
             Assert.fail();
         }
+    }
+
+    @Test
+    public void websitePlacingAd(){
+        driver.get("https://elenta.lt/registracija");
+        WebElement usernameField = driver.findElement(By.name("UserName"));
+        String uesername = "Petras14787";
+        usernameField.sendKeys(uesername);
+
+        WebElement emailField = driver.findElement(By.name("Email"));
+        String email = "Petras19@gmail.com";
+        emailField.sendKeys(email);
+
+        WebElement passwordField = driver.findElement(By.name("Password"));
+        String password = "Petras123";
+        passwordField.sendKeys(password);
+
+        WebElement passwordFieldRepeat = driver.findElement(By.name("Password2"));
+        String passwordRepeat = "Petras123";
+        passwordFieldRepeat.sendKeys(passwordRepeat);
+
+        driver.findElement(By.xpath("//*[@id=\"main-container\"]/form/fieldset/table/tbody/tr[11]/td[2]/input")).click();
+        driver.findElement(By.xpath("//*[@id=\"submit-new-ad-nav-button\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"select-top-category-list\"]/li[1]/a")).click();
+        driver.findElement(By.xpath("//*[@id=\"select-sub-category-list\"]/li[1]/a")).click();
+
+        WebElement titleField = driver.findElement(By.name("title"));
+        String title = "Pigus mašiniukas!";
+        titleField.sendKeys(title);
+
+        WebElement textField = driver.findElement(By.name("text"));
+        String text = "spòrtinis automob\uE00Clis, ne mažiau kaip dviejų vietų automobilis, turintis pagrindinę įprasto serijinio automobilio įrangą, bet pritaikytas važiuoti didesniu greičiu. Sportinis automobilis, kitaip negu lenktyninis automobilis, turi dengtus ratus ir visus lengvojo automobilio elementus. Dažniausiai tai geriau valdomi, greičiau įsibėgėjantys ir sportiškesnės išvaizdos kėbulais automobiliai. Sportinių automobilių technines charakteristikas reglamentuoja Tarptautinė automobilių federacija (Fédération Internationale de I’Automobile, FIA, įkurta 1904, būstinė Paryžiuje, 2020 vienijo 144 šalių 240 nacionalinių organizacijų). Nuo 1982 yra viena sportinių automobilių klasė; ribojama tik sportinio automobilio masė, matmenys ir degalų sąnaudos.";
+        textField.sendKeys(text);
+
+        WebElement priceField = driver.findElement(By.name("price"));
+        String price = "1000000";
+        priceField.sendKeys(price);
+
+        WebElement locationField = driver.findElement(By.name("location"));
+        String location = "Kaunas";
+        locationField.sendKeys(location);
+
+        WebElement phoneField = driver.findElement(By.name("phone"));
+        String phone = "+37012345678";
+        phoneField.sendKeys(phone);
+
+        WebElement emailField2 = driver.findElement(By.xpath("//*[@id=\"email\"]"));
+        String email2 = "Petras17@gmail.com";
+        emailField2.sendKeys(email2);
+
+        driver.findElement(By.xpath("//*[@id=\"submit-button\"]")).click();
+
+
+        WebElement imageInput = driver.findElement(By.xpath("//*[@id=\"inputfile\"]"));
+        String filePath = "C:/Users/l1utk/OneDrive/Desktop/paskaitos/maserati.jpg";
+        imageInput.sendKeys(filePath);
+
+        driver.findElement(By.xpath("//*[@id=\"forward-button\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"forward-button\"]")).click();
+
     }
 
 
