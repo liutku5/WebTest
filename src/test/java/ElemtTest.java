@@ -675,47 +675,58 @@ public class ElemtTest {
         String inputText = "Vynas";
         inputField.sendKeys(inputText);
         Thread.sleep(10000);
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div[1]/header/div[2]/div/div/div[3]/div/div/div/form/div[2]/div/div[1]/div[1]/div")));
         driver.findElement(By.xpath("//*[@id=\"app__header\"]/div[2]/div/div/div[3]/div/div/div/form/div[1]/button")).click();
 
     }
 
     @Test
-    public void websiteSkelbiu() throws InterruptedException {
+    public void websiteSkelbiuCountCards() throws InterruptedException {
         driver.get("https://skelbiu.lt/");
         driver.findElement(By.xpath("//*[@id=\"onetrust-accept-btn-handler\"]")).click();
 
         WebElement searchField = driver.findElement(By.id("searchKeyword"));
-        String inputText = "stetoskopas";
+        String inputText = "verpimo ratelis";
         searchField.sendKeys(inputText);
         driver.findElement(By.id("searchButton")).click();
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
         int totalCards = 0;
 
-        // Loop through pagination if "next" button exists
         while (true) {
-            // Find all card elements on the current page
-            List<WebElement> cardElements = driver.findElements(By.className("js-remember-button bookmark-button "));
-            totalCards += cardElements.size();
+            // Find all cards with the class name "extended-info"
+            List<WebElement> cards = driver.findElements(By.className("extended-info"));
 
+            // Count cards that have both a title and an image
+            for (WebElement card : cards) {
+                WebElement titleElement = null;
+                WebElement imageElement = null;
 
-            // Try to find the "next" button
+                try {
+                    titleElement = card.findElement(By.className("title"));
+                    imageElement = card.findElement(By.xpath(".//img[contains(@src, 'https://skelbiu-img')]"));
+                } catch (Exception e) {
+                    // Continue if either element is not found
+                    continue;
+                }
+
+                if (titleElement != null && imageElement != null) {
+                    totalCards++;
+                }
+            }
+
+            // Check for the presence of the next page button
             List<WebElement> nextPageElements = driver.findElements(By.cssSelector("a.pagination_link[rel='next']"));
 
-            // If there is a next page, navigate to it
             if (nextPageElements.size() > 0) {
                 nextPageElements.get(0).click();
-                Thread.sleep(5000); // Wait for the next page to load
+                Thread.sleep(2000);
             } else {
-                // Exit the loop if there are no more pages
                 break;
             }
         }
-
-        // Print the results
-        System.out.println("Total number of cards found: " + totalCards);
+        System.out.println("Total number of cards with title and image found: " + totalCards);
     }
-
     public void acceptCookies() {
         driver.get("https://elenta.lt");
         driver.findElement(By.className("fc-cta-consent")).click();
@@ -736,3 +747,5 @@ public class ElemtTest {
 //        driver.close();
     }
 }
+
+
