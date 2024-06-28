@@ -694,10 +694,8 @@ public class ElemtTest {
         int totalCards = 0;
 
         while (true) {
-            // Find all cards with the class name "extended-info"
             List<WebElement> cards = driver.findElements(By.className("extended-info"));
 
-            // Count cards that have both a title and an image
             for (WebElement card : cards) {
                 WebElement titleElement = null;
                 WebElement imageElement = null;
@@ -706,7 +704,6 @@ public class ElemtTest {
                     titleElement = card.findElement(By.className("title"));
                     imageElement = card.findElement(By.xpath(".//img[contains(@src, 'https://skelbiu-img')]"));
                 } catch (Exception e) {
-                    // Continue if either element is not found
                     continue;
                 }
 
@@ -715,18 +712,74 @@ public class ElemtTest {
                 }
             }
 
-            // Check for the presence of the next page button
             List<WebElement> nextPageElements = driver.findElements(By.cssSelector("a.pagination_link[rel='next']"));
 
             if (nextPageElements.size() > 0) {
                 nextPageElements.get(0).click();
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } else {
                 break;
             }
         }
         System.out.println("Total number of cards with title and image found: " + totalCards);
     }
+
+    @Test
+    public void websiteSkelbiuCardsPriceAverage() throws InterruptedException {
+        driver.get("https://skelbiu.lt/");
+        driver.findElement(By.xpath("//*[@id=\"onetrust-accept-btn-handler\"]")).click();
+
+        WebElement searchField = driver.findElement(By.id("searchKeyword"));
+        String inputText = "stetoskopas";
+        searchField.sendKeys(inputText);
+        driver.findElement(By.id("searchButton")).click();
+        Thread.sleep(2000);
+
+        int totalCards = 0;
+        double totalPrice = 0.0;
+
+        while (true) {
+            List<WebElement> cards = driver.findElements(By.className("extended-info"));
+
+            for (WebElement card : cards) {
+                WebElement titleElement = null;
+                WebElement imageElement = null;
+                WebElement priceElement = null;
+
+                try {
+                    titleElement = card.findElement(By.className("title"));
+                    imageElement = card.findElement(By.xpath(".//img[contains(@src, 'https://skelbiu-img')]"));
+                    priceElement = card.findElement(By.className("price"));  // Assuming price has class "price"
+                } catch (Exception e) {
+                    continue;
+                }
+
+                if (titleElement != null && imageElement != null && priceElement != null) {
+                    totalCards++;
+                    String priceText = priceElement.getText().replaceAll("[^\\d,]", "").replace(",", ".");
+                    try {
+                        double price = Double.parseDouble(priceText);
+                        totalPrice += price;
+                    } catch (NumberFormatException e) {
+                    }
+                }
+            }
+
+            List<WebElement> nextPageElements = driver.findElements(By.cssSelector("a.pagination_link[rel='next']"));
+
+            if (nextPageElements.size() > 0) {
+                nextPageElements.get(0).click();
+                Thread.sleep(1000);
+            } else {
+                break;
+            }
+        }
+
+        double averagePrice = (totalCards > 0) ? (totalPrice / totalCards) : 0.0;
+        System.out.println("Total number of cards with title and image found: " + totalCards);
+        System.out.println("Average price of the cards: " + averagePrice);
+    }
+
     public void acceptCookies() {
         driver.get("https://elenta.lt");
         driver.findElement(By.className("fc-cta-consent")).click();
@@ -740,7 +793,6 @@ public class ElemtTest {
         wait = new WebDriverWait(driver, Duration.ofSeconds(25));
 //        acceptCookies();
     }
-
 
     @AfterClass
     public void tearDown() {
